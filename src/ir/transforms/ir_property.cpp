@@ -37,6 +37,14 @@ std::string IRPropertyToString(IRProperty prop) {
       return "SplitIncoreOrch";
     case IRProperty::HasMemRefs:
       return "HasMemRefs";
+    case IRProperty::IncoreTensorOps:
+      return "IncoreTensorOps";
+    case IRProperty::TensorCanonicalized:
+      return "TensorCanonicalized";
+    case IRProperty::TensorLayoutPlanned:
+      return "TensorLayoutPlanned";
+    case IRProperty::TensorLowerable:
+      return "TensorLowerable";
     case IRProperty::IncoreTileOps:
       return "IncoreTileOps";
     case IRProperty::AllocatedMemoryAddr:

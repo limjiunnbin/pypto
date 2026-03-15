@@ -24,6 +24,10 @@ class IRProperty(Enum):
     NoRedundantBlocks = ...
     SplitIncoreOrch = ...
     HasMemRefs = ...
+    IncoreTensorOps = ...
+    TensorCanonicalized = ...
+    TensorLayoutPlanned = ...
+    TensorLowerable = ...
     IncoreTileOps = ...
     AllocatedMemoryAddr = ...
     MixedKernelExpanded = ...
@@ -250,6 +254,21 @@ def outline_incore_scopes() -> Pass:
 def outline_cluster_scopes() -> Pass:
     """Create a pass that outlines Cluster scopes into Group functions."""
 
+def canonicalize_tensor_ops() -> Pass:
+    """Create a pass that canonicalizes tensor ops in InCore functions."""
+
+def infer_tensor_shape_layout() -> Pass:
+    """Create a pass that infers tensor shape/layout metadata in InCore functions."""
+
+def plan_tensor_fusion() -> Pass:
+    """Create a pass that plans tensor fusion opportunities."""
+
+def validate_tensor_lowerability() -> Pass:
+    """Create a pass that validates tensor ops can be lowered to tile ops."""
+
+def lower_tensor_to_tile() -> Pass:
+    """Create the canonical pass that lowers tensor ops to tile ops in InCore functions."""
+
 def convert_tensor_to_tile_ops() -> Pass:
     """Create a pass that converts tensor ops to tile ops in InCore functions."""
 
@@ -339,6 +358,11 @@ __all__ = [
     "convert_to_ssa",
     "outline_incore_scopes",
     "outline_cluster_scopes",
+    "canonicalize_tensor_ops",
+    "infer_tensor_shape_layout",
+    "plan_tensor_fusion",
+    "validate_tensor_lowerability",
+    "lower_tensor_to_tile",
     "convert_tensor_to_tile_ops",
     "flatten_tile_nd_to_2d",
     "infer_tile_memory_space",

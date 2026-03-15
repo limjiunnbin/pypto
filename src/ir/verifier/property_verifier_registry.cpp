@@ -47,6 +47,10 @@ PropertyVerifierRegistry::PropertyVerifierRegistry() {
   Register(IRProperty::SplitIncoreOrch, CreateSplitIncoreOrchPropertyVerifier);
   Register(IRProperty::ClusterOutlined, CreateClusterOutlinedPropertyVerifier);
   Register(IRProperty::HasMemRefs, CreateHasMemRefsPropertyVerifier);
+  Register(IRProperty::IncoreTensorOps, CreateIncoreTensorOpsPropertyVerifier);
+  Register(IRProperty::TensorCanonicalized, CreateTensorCanonicalizedPropertyVerifier);
+  Register(IRProperty::TensorLayoutPlanned, CreateTensorLayoutPlannedPropertyVerifier);
+  Register(IRProperty::TensorLowerable, CreateTensorLowerablePropertyVerifier);
   Register(IRProperty::IncoreTileOps, CreateIncoreTileOpsPropertyVerifier);
   Register(IRProperty::MixedKernelExpanded, CreateMixedKernelExpandedPropertyVerifier);
   Register(IRProperty::AllocatedMemoryAddr, CreateAllocatedMemoryAddrPropertyVerifier);
