@@ -127,6 +127,39 @@ PropertyVerifierPtr CreateClusterOutlinedPropertyVerifier();
 PropertyVerifierPtr CreateHasMemRefsPropertyVerifier();
 
 /**
+ * @brief Factory function for creating IncoreTensorOps property verifier
+ *
+ * Verifies that InCore functions may contain tensor ops and do not contain
+ * unsupported non-tensor/non-tile op categories.
+ * @return Shared pointer to IncoreTensorOps PropertyVerifier
+ */
+PropertyVerifierPtr CreateIncoreTensorOpsPropertyVerifier();
+
+/**
+ * @brief Factory function for creating TensorCanonicalized property verifier
+ *
+ * Verifies canonical tensor-op forms expected after CanonicalizeTensorOps pass.
+ * @return Shared pointer to TensorCanonicalized PropertyVerifier
+ */
+PropertyVerifierPtr CreateTensorCanonicalizedPropertyVerifier();
+
+/**
+ * @brief Factory function for creating TensorLayoutPlanned property verifier
+ *
+ * Verifies tensor layout metadata consistency for InCore tensor computations.
+ * @return Shared pointer to TensorLayoutPlanned PropertyVerifier
+ */
+PropertyVerifierPtr CreateTensorLayoutPlannedPropertyVerifier();
+
+/**
+ * @brief Factory function for creating TensorLowerable property verifier
+ *
+ * Verifies all InCore TensorOp calls can be lowered by OpConversionRegistry.
+ * @return Shared pointer to TensorLowerable PropertyVerifier
+ */
+PropertyVerifierPtr CreateTensorLowerablePropertyVerifier();
+
+/**
  * @brief Factory function for creating IncoreTileOps property verifier
  * @return Shared pointer to IncoreTileOps PropertyVerifier
  */

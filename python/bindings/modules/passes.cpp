@@ -48,6 +48,14 @@ void BindPass(nb::module_& m) {
       .value("NoRedundantBlocks", IRProperty::NoRedundantBlocks, "No single-child or nested SeqStmts/OpStmts")
       .value("SplitIncoreOrch", IRProperty::SplitIncoreOrch, "InCore scopes outlined into separate functions")
       .value("HasMemRefs", IRProperty::HasMemRefs, "MemRef objects initialized on variables")
+      .value("IncoreTensorOps", IRProperty::IncoreTensorOps,
+             "InCore functions remain tensor-op centric before lowering")
+      .value("TensorCanonicalized", IRProperty::TensorCanonicalized,
+             "Tensor ops normalized to canonical forms")
+      .value("TensorLayoutPlanned", IRProperty::TensorLayoutPlanned,
+             "Tensor layout metadata has been planned/inferred")
+      .value("TensorLowerable", IRProperty::TensorLowerable,
+             "All InCore tensor ops are legal to lower to tile ops")
       .value("IncoreTileOps", IRProperty::IncoreTileOps,
              "InCore functions use tile ops (tile types, load/store)")
       .value("AllocatedMemoryAddr", IRProperty::AllocatedMemoryAddr,
@@ -226,6 +234,16 @@ void BindPass(nb::module_& m) {
              "Create a pass that outlines InCore scopes into separate functions");
   passes.def("outline_cluster_scopes", &pass::OutlineClusterScopes,
              "Create a pass that outlines Cluster scopes into separate Group functions");
+  passes.def("canonicalize_tensor_ops", &pass::CanonicalizeTensorOps,
+             "Create a pass that canonicalizes tensor ops in InCore functions");
+  passes.def("infer_tensor_shape_layout", &pass::InferTensorShapeLayout,
+             "Create a pass that infers tensor shape/layout metadata in InCore functions");
+  passes.def("plan_tensor_fusion", &pass::PlanTensorFusion,
+             "Create a pass that plans tensor fusion opportunities");
+  passes.def("validate_tensor_lowerability", &pass::ValidateTensorLowerability,
+             "Create a pass that validates tensor ops can be lowered to tile ops");
+  passes.def("lower_tensor_to_tile", &pass::LowerTensorToTile,
+             "Create the canonical pass that lowers tensor ops to tile ops in InCore functions");
   passes.def("convert_tensor_to_tile_ops", &pass::ConvertTensorToTileOps,
              "Create a pass that converts tensor ops to tile ops in InCore functions");
   passes.def("flatten_tile_nd_to_2d", &pass::FlattenTileNdTo2D,

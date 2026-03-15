@@ -117,10 +117,12 @@ set(PYPTO_SOURCES
     # IR - Transforms
     src/ir/transforms/allocate_memory_addr_pass.cpp
     src/ir/transforms/basic_memory_reuse_pass.cpp
+    src/ir/transforms/canonicalize_tensor_ops_pass.cpp
     src/ir/transforms/convert_tensor_to_tile_ops_pass.cpp
     src/ir/transforms/convert_to_ssa_pass.cpp
     src/ir/transforms/dependency_analyzer.cpp
     src/ir/transforms/flatten_call_expr_pass.cpp
+    src/ir/transforms/infer_tensor_shape_layout_pass.cpp
     src/ir/transforms/infer_tile_memory_space_pass.cpp
     src/ir/transforms/init_memref.cpp
     src/ir/transforms/ir_property.cpp
@@ -130,8 +132,10 @@ set(PYPTO_SOURCES
     src/ir/transforms/op_conversion_registry.cpp
     src/ir/transforms/outline_incore_scopes_pass.cpp
     src/ir/transforms/outline_cluster_scopes_pass.cpp
+    src/ir/transforms/plan_tensor_fusion_pass.cpp
     src/ir/transforms/expand_mixed_kernel_pass.cpp
     src/ir/transforms/flatten_tile_nd_to_2d_pass.cpp
+    src/ir/transforms/lower_tensor_to_tile_pass.cpp
     src/ir/transforms/pass_context.cpp
     src/ir/transforms/passes.cpp
     src/ir/transforms/resolve_transpose_layout_pass.cpp
@@ -144,6 +148,7 @@ set(PYPTO_SOURCES
     src/ir/transforms/utils/normalize_stmt_structure.cpp
     src/ir/transforms/utils/parent_stmt_analysis.cpp
     src/ir/transforms/visitor.cpp
+    src/ir/transforms/validate_tensor_lowerability_pass.cpp
 
     # IR - Reporter
     src/ir/reporter/report.cpp
@@ -155,6 +160,10 @@ set(PYPTO_SOURCES
     src/ir/verifier/property_verifier_registry.cpp
     src/ir/verifier/verify_ssa_pass.cpp
     src/ir/verifier/verify_no_nested_call_pass.cpp
+    src/ir/verifier/verify_incore_tensor_ops_pass.cpp
+    src/ir/verifier/verify_tensor_canonicalized_pass.cpp
+    src/ir/verifier/verify_tensor_layout_planned_pass.cpp
+    src/ir/verifier/verify_tensor_lowerable_pass.cpp
     src/ir/verifier/verify_break_continue_pass.cpp
     src/ir/verifier/type_check_pass.cpp
 

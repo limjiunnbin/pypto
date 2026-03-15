@@ -223,6 +223,45 @@ Pass OutlineIncoreScopes();
 Pass OutlineClusterScopes();
 
 /**
+ * @brief Canonicalize tensor ops in InCore functions
+ *
+ * Normalizes TensorOp call forms and arguments for deterministic downstream
+ * analysis/lowering.
+ */
+Pass CanonicalizeTensorOps();
+
+/**
+ * @brief Infer tensor shape/layout metadata in InCore functions
+ *
+ * Populates TensorType::tensor_view_ metadata (defaulting to ND layout where
+ * not explicitly provided) to make tensor stage layout-aware.
+ */
+Pass InferTensorShapeLayout();
+
+/**
+ * @brief Plan tensor fusion opportunities
+ *
+ * Analysis/normalization pass that prepares tensor graphs for lowering.
+ * Current implementation is conservative and preserves program semantics.
+ */
+Pass PlanTensorFusion();
+
+/**
+ * @brief Validate that InCore tensor ops are lowerable to tile ops
+ *
+ * Ensures all TensorOp calls in InCore functions have valid lowering rules
+ * (or are explicit passthrough tensor ops).
+ */
+Pass ValidateTensorLowerability();
+
+/**
+ * @brief Canonical tensor-to-tile lowering pass
+ *
+ * Preferred API for lowering InCore tensor ops to tile ops.
+ */
+Pass LowerTensorToTile();
+
+/**
  * @brief Convert tensor ops to tile ops in InCore functions
  *
  * Inserts tile.load at InCore function entry, converts tensor ops to tile ops

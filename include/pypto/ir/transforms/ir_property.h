@@ -37,6 +37,10 @@ enum class IRProperty : uint64_t {
   NoRedundantBlocks,        ///< No single-child or nested SeqStmts/OpStmts
   SplitIncoreOrch,          ///< InCore scopes outlined into separate functions
   HasMemRefs,               ///< MemRef objects initialized on variables
+  IncoreTensorOps,          ///< InCore functions are still tensor-op centric
+  TensorCanonicalized,      ///< Tensor ops normalized to canonical forms
+  TensorLayoutPlanned,      ///< Tensor layout metadata has been planned/inferred
+  TensorLowerable,          ///< All InCore tensor ops are legal to lower to tile ops
   IncoreTileOps,            ///< InCore functions use tile ops (tile types, load/store)
   AllocatedMemoryAddr,      ///< All MemRefs have valid addresses within buffer limits
   MixedKernelExpanded,      ///< Mixed InCore functions split into AIC+AIV

@@ -25,6 +25,10 @@ class TestIRProperty:
         assert passes.IRProperty.NoRedundantBlocks is not None
         assert passes.IRProperty.SplitIncoreOrch is not None
         assert passes.IRProperty.HasMemRefs is not None
+        assert passes.IRProperty.IncoreTensorOps is not None
+        assert passes.IRProperty.TensorCanonicalized is not None
+        assert passes.IRProperty.TensorLayoutPlanned is not None
+        assert passes.IRProperty.TensorLowerable is not None
 
     def test_property_values_are_different(self):
         """Test that all property values are distinct."""
@@ -36,6 +40,10 @@ class TestIRProperty:
             passes.IRProperty.NoRedundantBlocks,
             passes.IRProperty.SplitIncoreOrch,
             passes.IRProperty.HasMemRefs,
+            passes.IRProperty.IncoreTensorOps,
+            passes.IRProperty.TensorCanonicalized,
+            passes.IRProperty.TensorLayoutPlanned,
+            passes.IRProperty.TensorLowerable,
         ]
         assert len(props) == len(set(props))
 
@@ -204,6 +212,21 @@ class TestPassPropertyAccessors:
         p = passes.convert_tensor_to_tile_ops()
         assert p.get_required_properties().contains(passes.IRProperty.SSAForm)
         assert p.get_produced_properties().contains(passes.IRProperty.SSAForm)
+
+    def test_tensor_stage_pass_properties(self):
+        """Tensor stage passes produce expected properties."""
+        p1 = passes.canonicalize_tensor_ops()
+        assert p1.get_produced_properties().contains(passes.IRProperty.TensorCanonicalized)
+        assert p1.get_produced_properties().contains(passes.IRProperty.IncoreTensorOps)
+
+        p2 = passes.infer_tensor_shape_layout()
+        assert p2.get_produced_properties().contains(passes.IRProperty.TensorLayoutPlanned)
+
+        p3 = passes.validate_tensor_lowerability()
+        assert p3.get_produced_properties().contains(passes.IRProperty.TensorLowerable)
+
+        p4 = passes.lower_tensor_to_tile()
+        assert p4.get_produced_properties().contains(passes.IRProperty.IncoreTileOps)
 
     def test_expand_mixed_kernel_requires_and_produces_ssa(self):
         """Test ExpandMixedKernel requires and produces SSAForm."""

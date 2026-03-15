@@ -65,6 +65,34 @@ inline const PassProperties kOutlineClusterScopesProperties{
 
 // -- Tensor-to-tile conversion pass ------------------------------------------
 
+inline const PassProperties kCanonicalizeTensorOpsProperties{
+    .required = {IRProperty::SSAForm, IRProperty::SplitIncoreOrch},
+    .produced = {IRProperty::SSAForm, IRProperty::SplitIncoreOrch, IRProperty::IncoreTensorOps,
+                 IRProperty::TensorCanonicalized}};
+
+inline const PassProperties kInferTensorShapeLayoutProperties{
+    .required = {IRProperty::SSAForm, IRProperty::SplitIncoreOrch, IRProperty::IncoreTensorOps,
+                 IRProperty::TensorCanonicalized},
+    .produced = {IRProperty::SSAForm, IRProperty::SplitIncoreOrch, IRProperty::IncoreTensorOps,
+                 IRProperty::TensorCanonicalized, IRProperty::TensorLayoutPlanned}};
+
+inline const PassProperties kPlanTensorFusionProperties{
+    .required = {IRProperty::SSAForm, IRProperty::SplitIncoreOrch, IRProperty::IncoreTensorOps,
+                 IRProperty::TensorCanonicalized, IRProperty::TensorLayoutPlanned},
+    .produced = {IRProperty::SSAForm, IRProperty::SplitIncoreOrch, IRProperty::IncoreTensorOps,
+                 IRProperty::TensorCanonicalized, IRProperty::TensorLayoutPlanned}};
+
+inline const PassProperties kValidateTensorLowerabilityProperties{
+    .required = {IRProperty::SSAForm, IRProperty::SplitIncoreOrch, IRProperty::IncoreTensorOps,
+                 IRProperty::TensorCanonicalized, IRProperty::TensorLayoutPlanned},
+    .produced = {IRProperty::SSAForm, IRProperty::SplitIncoreOrch, IRProperty::IncoreTensorOps,
+                 IRProperty::TensorCanonicalized, IRProperty::TensorLayoutPlanned,
+                 IRProperty::TensorLowerable}};
+
+inline const PassProperties kLowerTensorToTileProperties{
+    .required = {IRProperty::SSAForm, IRProperty::SplitIncoreOrch, IRProperty::TensorLowerable},
+    .produced = {IRProperty::SSAForm, IRProperty::IncoreTileOps}};
+
 inline const PassProperties kConvertTensorToTileOpsProperties{
     .required = {IRProperty::SSAForm, IRProperty::SplitIncoreOrch},
     .produced = {IRProperty::SSAForm, IRProperty::IncoreTileOps}};

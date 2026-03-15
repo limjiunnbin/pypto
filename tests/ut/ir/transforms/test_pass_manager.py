@@ -41,8 +41,8 @@ class TestPassManagerBasics:
         assert pm is not None
         assert pm.strategy == ir.OptimizationStrategy.Default
 
-        assert len(pm.passes) == 14
-        assert len(pm.pass_names) == 14
+        assert len(pm.passes) == 18
+        assert len(pm.pass_names) == 18
         assert pm.pass_names[0] == "UnrollLoops"
         assert pm.pass_names[1] == "ConvertToSSA"
         assert pm.pass_names[2] == "FlattenCallExpr"
@@ -50,13 +50,17 @@ class TestPassManagerBasics:
         assert pm.pass_names[4] == "InterchangeChunkLoops"
         assert pm.pass_names[5] == "OutlineIncoreScopes"
         assert pm.pass_names[6] == "OutlineClusterScopes"
-        assert pm.pass_names[7] == "ConvertTensorToTileOps"
-        assert pm.pass_names[8] == "FlattenTileNdTo2D"
-        assert pm.pass_names[9] == "InferTileMemorySpace"
-        assert pm.pass_names[10] == "ResolveTransposeLayout"
-        assert pm.pass_names[11] == "InitMemRef"
-        assert pm.pass_names[12] == "MemoryReuse"
-        assert pm.pass_names[13] == "AllocateMemoryAddr"
+        assert pm.pass_names[7] == "CanonicalizeTensorOps"
+        assert pm.pass_names[8] == "InferTensorShapeLayout"
+        assert pm.pass_names[9] == "PlanTensorFusion"
+        assert pm.pass_names[10] == "ValidateTensorLowerability"
+        assert pm.pass_names[11] == "LowerTensorToTile"
+        assert pm.pass_names[12] == "FlattenTileNdTo2D"
+        assert pm.pass_names[13] == "InferTileMemorySpace"
+        assert pm.pass_names[14] == "ResolveTransposeLayout"
+        assert pm.pass_names[15] == "InitMemRef"
+        assert pm.pass_names[16] == "MemoryReuse"
+        assert pm.pass_names[17] == "AllocateMemoryAddr"
 
 
 class TestPassManagerExecution:
