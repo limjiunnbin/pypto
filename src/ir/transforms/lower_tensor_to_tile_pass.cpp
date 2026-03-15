@@ -19,10 +19,7 @@ namespace ir {
 namespace pass {
 
 Pass LowerTensorToTile() {
-  auto pass_func = [](const ProgramPtr& program) -> ProgramPtr {
-    return ConvertTensorToTileOps()(program);
-  };
-  return CreateProgramPass(pass_func, "LowerTensorToTile", kLowerTensorToTileProperties);
+  return ConvertTensorToTileOps();
 }
 
 }  // namespace pass

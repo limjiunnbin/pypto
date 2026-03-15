@@ -66,16 +66,15 @@ def build_glm_program(seq_len: int = 16, hidden_dim: int = 64):
             self,
             x: pl.Tensor[[seq_len, hidden_dim], pl.FP32],
             w_q: pl.Tensor[[hidden_dim, hidden_dim], pl.FP32],
-            w_k: pl.Tensor[[hidden_dim, hidden_dim], pl.FP32],
+            w_attn: pl.Tensor[[hidden_dim, seq_len], pl.FP32],
             w_v: pl.Tensor[[hidden_dim, hidden_dim], pl.FP32],
             w_ff1: pl.Tensor[[hidden_dim, hidden_dim], pl.FP32],
             w_ff2: pl.Tensor[[hidden_dim, hidden_dim], pl.FP32],
         ) -> pl.Tensor[[seq_len, hidden_dim], pl.FP32]:
             q: pl.Tensor[[seq_len, hidden_dim], pl.FP32] = pl.matmul(x, w_q)
-            k: pl.Tensor[[seq_len, hidden_dim], pl.FP32] = pl.matmul(x, w_k)
             v: pl.Tensor[[seq_len, hidden_dim], pl.FP32] = pl.matmul(x, w_v)
 
-            scores: pl.Tensor[[seq_len, seq_len], pl.FP32] = pl.matmul(q, k, b_trans=True)
+            scores: pl.Tensor[[seq_len, seq_len], pl.FP32] = pl.matmul(q, w_attn)
             scaled: pl.Tensor[[seq_len, seq_len], pl.FP32] = pl.mul(scores, scale)
             row_max: pl.Tensor[[seq_len, 1], pl.FP32] = pl.row_max(scaled)
             shifted: pl.Tensor[[seq_len, seq_len], pl.FP32] = pl.row_expand_sub(scaled, row_max)
@@ -101,12 +100,14 @@ def build_glm_program(seq_len: int = 16, hidden_dim: int = 64):
             self,
             x: pl.Tensor[[seq_len, hidden_dim], pl.FP32],
             w_q: pl.Tensor[[hidden_dim, hidden_dim], pl.FP32],
-            w_k: pl.Tensor[[hidden_dim, hidden_dim], pl.FP32],
+            w_attn: pl.Tensor[[hidden_dim, seq_len], pl.FP32],
             w_v: pl.Tensor[[hidden_dim, hidden_dim], pl.FP32],
             w_ff1: pl.Tensor[[hidden_dim, hidden_dim], pl.FP32],
             w_ff2: pl.Tensor[[hidden_dim, hidden_dim], pl.FP32],
         ) -> pl.Tensor[[seq_len, hidden_dim], pl.FP32]:
-            out: pl.Tensor[[seq_len, hidden_dim], pl.FP32] = self.glm_kernel(x, w_q, w_k, w_v, w_ff1, w_ff2)
+            out: pl.Tensor[[seq_len, hidden_dim], pl.FP32] = self.glm_kernel(
+                x, w_q, w_attn, w_v, w_ff1, w_ff2
+            )
             return out
 
     return GLMProgram

@@ -41,10 +41,10 @@ def build_fa_program(seq_len: int = 16, hidden_dim: int = 64):
         def fa_kernel(
             self,
             q: pl.Tensor[[seq_len, hidden_dim], pl.FP32],
-            k: pl.Tensor[[seq_len, hidden_dim], pl.FP32],
+            k_t: pl.Tensor[[hidden_dim, seq_len], pl.FP32],
             v: pl.Tensor[[seq_len, hidden_dim], pl.FP32],
         ) -> pl.Tensor[[seq_len, hidden_dim], pl.FP32]:
-            scores: pl.Tensor[[seq_len, seq_len], pl.FP32] = pl.matmul(q, k, b_trans=True)
+            scores: pl.Tensor[[seq_len, seq_len], pl.FP32] = pl.matmul(q, k_t)
             scaled: pl.Tensor[[seq_len, seq_len], pl.FP32] = pl.mul(scores, scale)
             row_max: pl.Tensor[[seq_len, 1], pl.FP32] = pl.row_max(scaled)
             shifted: pl.Tensor[[seq_len, seq_len], pl.FP32] = pl.row_expand_sub(scaled, row_max)
@@ -58,10 +58,10 @@ def build_fa_program(seq_len: int = 16, hidden_dim: int = 64):
         def main(
             self,
             q: pl.Tensor[[seq_len, hidden_dim], pl.FP32],
-            k: pl.Tensor[[seq_len, hidden_dim], pl.FP32],
+            k_t: pl.Tensor[[hidden_dim, seq_len], pl.FP32],
             v: pl.Tensor[[seq_len, hidden_dim], pl.FP32],
         ) -> pl.Tensor[[seq_len, hidden_dim], pl.FP32]:
-            out: pl.Tensor[[seq_len, hidden_dim], pl.FP32] = self.fa_kernel(q, k, v)
+            out: pl.Tensor[[seq_len, hidden_dim], pl.FP32] = self.fa_kernel(q, k_t, v)
             return out
 
     return FAProgram
